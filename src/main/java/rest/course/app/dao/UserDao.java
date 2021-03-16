@@ -1,15 +1,18 @@
 package rest.course.app.dao;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+
 
 import rest.course.app.model.User;
 
 public interface UserDao {
 
-	List<User>getAllUsers();
+	List<User>selectAllUsers();
 	
-	User getUser(UUID userUid);
+	Optional<User> selectUserByUserUid(UUID userUid);
 	
 	int updateUser(User user);
 	

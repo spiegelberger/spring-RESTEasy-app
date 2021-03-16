@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.stereotype.Repository;
 
 import rest.course.app.model.Gender;
 import rest.course.app.model.User;
 
+@Repository
 public class FakeDao implements UserDao{
 
 	
@@ -23,15 +27,15 @@ public class FakeDao implements UserDao{
 	}
 	
 	@Override
-	public List<User> getAllUsers() {
+	public List<User> selectAllUsers() {
 		
 		return new ArrayList<>(database.values());
 	}
 
 	@Override
-	public User getUser(UUID userUid) {
+	public Optional<User> selectUserByUserUid(UUID userUid) {
 		
-		return database.get(userUid);
+		return Optional.ofNullable(database.get(userUid));
 	}
 
 	@Override
@@ -52,5 +56,7 @@ public class FakeDao implements UserDao{
 		database.put(userUid, user);
 		return 1;
 	}
+
+
 
 }
