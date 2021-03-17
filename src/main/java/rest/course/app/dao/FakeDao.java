@@ -16,15 +16,17 @@ import rest.course.app.model.User;
 public class FakeDao implements UserDao{
 
 	
-	private static Map<UUID, User>database;
-	
-	static {
-		database = new HashMap<>();
+	private  Map<UUID, User>database;
+			
 		
-		//add an element to the database:
-		UUID joeUserUid = UUID.randomUUID();
-		database.put(joeUserUid, new User(joeUserUid, "Joe", "Jones", Gender.MALE, 22, "joejones@gmail.com") );
+		public FakeDao() {
+			database = new HashMap<>();
+			//add an element to the database:
+			UUID joeUserUid = UUID.randomUUID();
+			database.put(joeUserUid, new User(joeUserUid, "Joe", "Jones", Gender.MALE, 22, "joejones@gmail.com") );
 	}
+
+			
 	
 	@Override
 	public List<User> selectAllUsers() {
