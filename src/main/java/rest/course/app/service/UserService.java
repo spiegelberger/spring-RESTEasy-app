@@ -48,16 +48,16 @@ public class UserService {
 	public int removeUser(UUID userUid) {
 		Optional<User>optionalUser = getUser(userUid);
 		if(optionalUser.isPresent()) {
-			userDao.removeUser(userUid);
-			return 1;
+			return userDao.removeUser(userUid);			
 		}
 		return -1;
 	}
 
 	
 	public int insertUser(User user) {
-		
-		return userDao.insertUser(UUID.randomUUID(), user);
+		UUID userUid = UUID.randomUUID();
+		user.setUserUid(userUid);
+		return userDao.insertUser(userUid, user);
 		
 	}
 }

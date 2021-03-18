@@ -6,7 +6,7 @@ import java.util.UUID;
 public class User {
 
 	
-	private final UUID userUid;
+	private UUID userUid;
 	
 	private final String firstName;
 	
@@ -55,6 +55,12 @@ public class User {
 	public String toString() {
 		return "User [userUid=" + userUid + ", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
 				+ ", age=" + age + ", email=" + email + "]";
+	}
+
+	public void setUserUid(UUID userUid) {
+		
+		this.userUid = userUid;
+		
 	}
 	
 	
