@@ -47,7 +47,7 @@ class UserServiceTest {
 		
 		when(userDao.selectAllUsers()).thenReturn(users);
 		
-		List<User>allUsers = userService.getAllUsers();
+		List<User>allUsers = userService.getAllUsers(Optional.empty());
 		
 		assertThat(allUsers).hasSize(1);
 		

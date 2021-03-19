@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.ws.rs.QueryParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,9 +34,9 @@ public class UserController {
 	}
 
 	@GetMapping()
-	public List<User> fetchUsers() {
-
-		return userService.getAllUsers();
+	public List<User> fetchUsers(@QueryParam("gender")String gender) {
+		
+		return userService.getAllUsers(Optional.ofNullable(gender));
 	}
 
 	@GetMapping(path = "{userUid}")

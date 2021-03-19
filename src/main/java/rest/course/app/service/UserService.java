@@ -3,11 +3,13 @@ package rest.course.app.service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import rest.course.app.dao.UserDao;
+import rest.course.app.model.Gender;
 import rest.course.app.model.User;
 
 @Service
@@ -21,9 +23,22 @@ public class UserService {
 	}
 
 	
-	public List<User> getAllUsers() {
+	public List<User> getAllUsers(Optional<String> gender) {
 		
-		return userDao.selectAllUsers();
+		List<User>users =  userDao.selectAllUsers();		
+			if(!gender.isPresent()) {
+				return users;
+			}
+		try {
+			Gender theGender = Gender.valueOf(gender.get().toUpperCase());
+			return users.stream()
+					.filter(user -> user.getGender().equals(theGender))
+					.collect(Collectors.toList());
+		}
+		catch(Exception e) {
+			throw new IllegalStateException("Invalid gender", e);
+		}
+		
 	}
 	
 	
