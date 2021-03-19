@@ -33,13 +33,13 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping()
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<User> fetchUsers(@QueryParam("gender")String gender) {
 		
 		return userService.getAllUsers(Optional.ofNullable(gender));
 	}
 
-	@GetMapping(path = "{userUid}")
+	@GetMapping(path = "{userUid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> fetchUser(@PathVariable("userUid") UUID userUid) {
 
 		Optional<User> userOptional = userService.getUser(userUid);
@@ -51,7 +51,8 @@ public class UserController {
 				.body(new ErrorMessage("user " + userUid + " was not found."));
 	}
 
-	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+				produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> insertNewUser(@RequestBody User user) {
 
 		int result = userService.insertUser(user);
@@ -59,7 +60,8 @@ public class UserController {
 	}
 
 	
-	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+				produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer> updateUser(@RequestBody User user) {
 
 		int result = userService.updateUser(user);
@@ -67,7 +69,7 @@ public class UserController {
 
 	}
 	
-	@DeleteMapping(path = "{userUid}")
+	@DeleteMapping(path = "{userUid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Integer>deleteUser(@PathVariable ("userUid") UUID userUid){
 		
 		int result = userService.removeUser(userUid);
