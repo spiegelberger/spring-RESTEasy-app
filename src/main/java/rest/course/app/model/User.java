@@ -8,15 +8,19 @@ public class User {
 	
 	private UUID userUid;
 	
-	private final String firstName;
+	private String firstName;
 	
-	private final String lastName;
+	private String lastName;
 	
-	private final Gender gender;
+	private Gender gender;
 	
-	private final Integer age;
+	private Integer age;
 	
-	private final String email;
+	private String email;
+	
+	public User() {
+		
+	}
 
 	public User(UUID userUid, String firstName, String lastName, Gender gender, Integer age, String email) {		
 		this.userUid = userUid;
