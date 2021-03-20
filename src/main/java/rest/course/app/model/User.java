@@ -1,28 +1,34 @@
 package rest.course.app.model;
 
+import java.time.LocalDate;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class User {
 
 	
-	private UUID userUid;
+	private final UUID userUid;
 	
-	private String firstName;
+	private final String firstName;
 	
-	private String lastName;
+	private final String lastName;
 	
-	private Gender gender;
+	private final Gender gender;
 	
-	private Integer age;
+	private final Integer age;
 	
-	private String email;
+	private final String email;
 	
-	public User() {
-		
-	}
 
-	public User(UUID userUid, String firstName, String lastName, Gender gender, Integer age, String email) {		
+	public User(@JsonProperty("userUid")UUID userUid, 
+			@JsonProperty("firstName")String firstName,
+			@JsonProperty("lastName") String lastName,
+			@JsonProperty("gender")Gender gender,
+			@JsonProperty("age")Integer age, 
+			@JsonProperty("email")String email) {		
 		this.userUid = userUid;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -31,14 +37,18 @@ public class User {
 		this.email = email;
 	}
 
+	@JsonProperty("id")
 	public UUID getUserUid() {
 		return userUid;
 	}
 
+	// The response will not include fields marked by @JsonIgnore:
+	//@JsonIgnore
 	public String getFirstName() {
 		return firstName;
 	}
 
+	//@JsonIgnore
 	public String getLastName() {
 		return lastName;
 	}
@@ -54,6 +64,21 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
+	
+	//Computed Json property
+	public String getFullName() {
+		return firstName + " " + lastName;
+	}
+	
+	public int getYearOfBirth() {
+		return LocalDate.now().minusYears(age).getYear();
+	}
+	
+	public static User newUser(UUID userUid, User user) {
+		return new User(userUid, user.getFirstName(), user.lastName, user.getGender(), 
+				user.getAge(), user.getEmail());
+				
+	}
 
 	@Override
 	public String toString() {
@@ -61,11 +86,6 @@ public class User {
 				+ ", age=" + age + ", email=" + email + "]";
 	}
 
-	public void setUserUid(UUID userUid) {
-		
-		this.userUid = userUid;
-		
-	}
 	
 	
 }
