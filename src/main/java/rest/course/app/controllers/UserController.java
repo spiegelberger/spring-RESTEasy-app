@@ -22,8 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 import rest.course.app.model.User;
 import rest.course.app.service.UserService;
 
-@RestController
-@RequestMapping(path = "/api/v1/users")
+/*
+ * If we use RestEasy we do not use this controller
+ */
+//@RestController
+//@RequestMapping(path = "/api/v1/users")
 public class UserController {
 
 	private UserService userService;
@@ -87,21 +90,5 @@ public class UserController {
 
 	
 	
-	class ErrorMessage {
-
-		String errorMessage;
-
-		public ErrorMessage(String errorMessage) {
-			this.errorMessage = errorMessage;
-		}
-
-		public String getErrorMessage() {
-			return errorMessage;
-		}
-
-		public void setErrorMessage(String errorMessage) {
-			this.errorMessage = errorMessage;
-		}
-
-	}
+	
 }
