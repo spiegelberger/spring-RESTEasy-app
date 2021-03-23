@@ -150,15 +150,16 @@ class UserServiceTest {
 	
 	@Test
 	void testInsertUser() {
-		User anna = new User(null, "Anna", "Montana", Gender.FEMALE, 30, "annamontana@gmail.com");
+		UUID userUid = UUID.randomUUID();
+		User anna = new User(userUid, "Anna", "Montana", Gender.FEMALE, 30, "annamontana@gmail.com");
 		
-		when(userDao.insertUser(any(UUID.class), eq(anna))).thenReturn(1);
+		when(userDao.insertUser(any(UUID.class), any(User.class))).thenReturn(1);
 		
 		ArgumentCaptor<User>captor = ArgumentCaptor.forClass(User.class);		
 		
 		int insertResult = userService.insertUser(anna);
 		
-		verify(userDao).insertUser(any(UUID.class), captor.capture());
+		verify(userDao).insertUser(eq(userUid), captor.capture());
 		
 		User user = captor.getValue();
 		assertAnnaUserFields(user);

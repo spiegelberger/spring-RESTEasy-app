@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -37,67 +38,43 @@ public class UserControllerRestEasy {
 		this.userService = userService;
 	}
 
-	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> fetchUsers(@QueryParam("gender") String gender) {
 		return userService.getAllUsers(Optional.ofNullable(gender));
 	}
 
-	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{userUid}")
-	public Response fetchUser(@PathParam("userUid") UUID userUid) {
+	public User fetchUser(@PathParam("userUid") UUID userUid) {
 
-		Optional<User> userOptional = userService.getUser(userUid);
-
-		if (userOptional.isPresent()) {
-			return Response.ok(userOptional.get()).build();
-		}
-		return Response.status(Status.NOT_FOUND)
-				.entity(new ErrorMessage("user " + userUid + " was not found."))
-				.build();
+		return userService.getUser(userUid)
+				.orElseThrow(() -> new NotFoundException("user " + userUid + " not found."));
 	}
 
-	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response insertNewUser(@Valid User user) {
+	public void insertNewUser(@Valid User user) {
 
-		int result = userService.insertUser(user);
-		return getIntegerResponseEntity(result);
+		userService.insertUser(user);
 	}
 
-	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateUser(User user) {
+	public void updateUser(User user) {
 
-		int result = userService.updateUser(user);
-		return getIntegerResponseEntity(result);
-
+		userService.updateUser(user);
 	}
 
-	
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{userUid}")
-	public Response deleteUser(@PathParam("userUid") UUID userUid) {
+	public void deleteUser(@PathParam("userUid") UUID userUid) {
 
-		int result = userService.removeUser(userUid);
-		return getIntegerResponseEntity(result);
-
+		userService.removeUser(userUid);
 	}
 
-	
-	
-	private Response getIntegerResponseEntity(int result) {
-		if (result == 1) {
-			return Response.ok().build();
-		}
-	return Response.status(Status.BAD_REQUEST).build();
-	}
 }

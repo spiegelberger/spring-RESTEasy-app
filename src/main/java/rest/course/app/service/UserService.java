@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.ws.rs.NotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,19 +56,19 @@ public class UserService {
 		
 		Optional<User>optionalUser = getUser(user.getUserUid());
 			if(optionalUser.isPresent()) {
-				userDao.updateUser(user);
-				return 1;
+				return userDao.updateUser(user);				
 			}
-		return -1;
+			
+		throw new NotFoundException("user " + user.getUserUid() + " not found.");
 	}
 
 
-	public int removeUser(UUID userUid) {
-		Optional<User>optionalUser = getUser(userUid);
-		if(optionalUser.isPresent()) {
-			return userDao.removeUser(userUid);			
-		}
-		return -1;
+	public int removeUser(UUID uid) {
+		UUID userUid = getUser(uid)
+				.map(User::getUserUid)
+				.orElseThrow(()->new NotFoundException("user " + uid + " not found."));
+		
+		return userDao.removeUser(userUid);
 	}
 
 	
@@ -74,14 +76,5 @@ public class UserService {
 		UUID userUid = user.getUserUid()==null? UUID.randomUUID() : user.getUserUid();
 		return userDao.insertUser(userUid, User.newUser(userUid, user));
 		
-	}
-
-
-	private void validateUser(User user) {
-		Objects.requireNonNull(user.getFirstName(), "First name required");
-		Objects.requireNonNull(user.getLastName(), "Last name required");
-		Objects.requireNonNull(user.getAge(), "Age required");
-		Objects.requireNonNull(user.getEmail(), "Email required");
-		Objects.requireNonNull(user.getGender(), "Gender required");
 	}
 }
