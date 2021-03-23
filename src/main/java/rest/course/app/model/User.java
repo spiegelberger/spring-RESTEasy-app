@@ -3,7 +3,11 @@ package rest.course.app.model;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,14 +17,22 @@ public class User {
 	
 	private final UUID userUid;
 	
+	@NotNull(message = "first name cannot be null")
 	private final String firstName;
 	
+	@NotNull(message = "last name cannot be null")
 	private final String lastName;
 	
+	@NotNull(message = "gender cannot be null")
 	private final Gender gender;
 	
+	@NotNull(message = "age cannot be null")
+	@Max(value =120)
+	@Min(value = 18)
 	private final Integer age;
 	
+	@Email
+	@NotNull(message = "email cannot be null")
 	private final String email;
 	
 

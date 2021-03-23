@@ -1,6 +1,7 @@
 package rest.course.app.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -70,8 +71,17 @@ public class UserService {
 
 	
 	public int insertUser(User user) {
-		UUID userUid = user.getUserUid()==null? UUID.randomUUID() :user.getUserUid();
+		UUID userUid = user.getUserUid()==null? UUID.randomUUID() : user.getUserUid();
 		return userDao.insertUser(userUid, User.newUser(userUid, user));
 		
+	}
+
+
+	private void validateUser(User user) {
+		Objects.requireNonNull(user.getFirstName(), "First name required");
+		Objects.requireNonNull(user.getLastName(), "Last name required");
+		Objects.requireNonNull(user.getAge(), "Age required");
+		Objects.requireNonNull(user.getEmail(), "Email required");
+		Objects.requireNonNull(user.getGender(), "Gender required");
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,11 +20,13 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import rest.course.app.model.User;
 import rest.course.app.service.UserService;
 
 @Component
+@Validated
 @Path("api/v1/users")
 public class UserControllerRestEasy {
 
@@ -61,7 +64,7 @@ public class UserControllerRestEasy {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response insertNewUser(User user) {
+	public Response insertNewUser(@Valid User user) {
 
 		int result = userService.insertUser(user);
 		return getIntegerResponseEntity(result);
